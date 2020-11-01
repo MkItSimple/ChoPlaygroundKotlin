@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_app_graph"
+    app:startDestination="@id/folderListFragment">
+
+    <fragment
+        android:id="@+id/folderListFragment"
+        android:name="com.example.choplaygroundkotlin.framework.presentation.folderlist.FolderListFragment"
+        android:label="fragment_folder_list"
+        tools:layout="@layout/fragment_folder_list" />
+</navigation>
