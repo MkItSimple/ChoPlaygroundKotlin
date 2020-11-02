@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import com.example.choplaygroundkotlin.business.domain.util.DateUtil
 import com.example.choplaygroundkotlin.framework.common.NoteFragmentFactory
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,11 +21,13 @@ object NoteFragmentFactoryModule {
     @Provides
     fun provideNoteFragmentFactory(
         viewModelFactory: ViewModelProvider.Factory,
-        dateUtil: DateUtil
+        dateUtil: DateUtil,
+        firestore: FirebaseFirestore
     ): FragmentFactory {
         return NoteFragmentFactory(
             viewModelFactory,
-            dateUtil
+            dateUtil,
+            firestore
         )
     }
 }

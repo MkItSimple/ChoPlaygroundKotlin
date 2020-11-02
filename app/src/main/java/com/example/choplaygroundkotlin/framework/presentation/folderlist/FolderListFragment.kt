@@ -3,8 +3,10 @@ package com.example.choplaygroundkotlin.framework.presentation.folderlist
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -20,20 +22,28 @@ import com.example.choplaygroundkotlin.di.AppComponent
 import com.example.choplaygroundkotlin.framework.common.TopSpacingItemDecoration
 import com.example.choplaygroundkotlin.framework.presentation.folderlist.state.FolderListToolbarState
 import com.example.choplaygroundkotlin.framework.presentation.folderlist.state.FolderListToolbarState.*
+import com.example.choplaygroundkotlin.util.AndroidTestUtils
+import com.example.choplaygroundkotlin.util.printLogD
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_folder_list.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
 @FlowPreview
 @ExperimentalCoroutinesApi
 class FolderListFragment
 constructor(
         private val viewModelFactory: ViewModelProvider.Factory,
-        private val dateUtil: DateUtil
+        private val dateUtil: DateUtil,
+        private val firestore: FirebaseFirestore
 ) : Fragment(R.layout.fragment_folder_list),
         FolderListAdapter.Interaction,
         ItemTouchHelperAdapter
 {
+        @Inject
+        lateinit var androidTestUtils: AndroidTestUtils
+
         val viewModel: FolderListViewModel by viewModels {
                 viewModelFactory
         }
@@ -55,12 +65,12 @@ constructor(
                 postToList()
 
                 setupRecyclerView()
-                setupSwipeRefresh()
+//                setupSwipeRefresh()
 //                setupFAB()
                 subscribeObservers()
 //                restoreInstanceState(savedInstanceState)
-
         }
+
 
         private fun addToList(id: String, folder_name: String, folder_counts: Int) {
                 ids.add(id)
@@ -76,7 +86,7 @@ constructor(
 
         private fun postToList() {
                 for (i in 1..25){
-                        addToList("ID $i", "Folder $i", 23)
+                        addToList("ID $i", "Folder $i", 5 + i)
                 }
         }
 
@@ -87,7 +97,7 @@ constructor(
                         when(toolbarState){
 
                                 is MultiSelectionState -> {
-                                        //enableMultiSelectToolbarState()
+                                        enableMultiSelectToolbarState()
                                         //disableSearchViewToolbarState()
                                         Log.d("action", "enableMultiSelectToolbarState")
                                 }
@@ -103,7 +113,7 @@ constructor(
                         folders.add(Folder("id $i", "f$i", 23))
                 }
                 listAdapter?.submitList(folders)
-                listAdapter?.notifyDataSetChanged()
+                //listAdapter?.notifyDataSetChanged()
         }
 
         private fun setupRecyclerView() {
@@ -155,43 +165,43 @@ constructor(
                 parentView
                         .findViewById<ImageView>(R.id.action_delete_folders)
                         .setOnClickListener {
-                                //deleteNotes()
+//                                deleteNotes()
                         }
         }
 
-        private fun enableSearchViewToolbarState(){
-                view?.let { v ->
-                        val view = View.inflate(
-                                v.context,
-                                R.layout.layout_searchview_toolbar_folder,
-                                null
-                        )
-                        view.layoutParams = LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.MATCH_PARENT
-                        )
-                        toolbar_content_container.addView(view)
-                        setupSearchView()
-                        setupFilterButton()
-                }
-        }
-
-        private fun disableMultiSelectToolbarState(){
-                view?.let {
-                        val view = toolbar_content_container
-                                .findViewById<Toolbar>(R.id.multiselect_toolbar)
-                        toolbar_content_container.removeView(view)
-                        viewModel.clearSelectedNotes()
-                }
-        }
-
-        private fun disableSearchViewToolbarState(){
-                view?.let {
-                        val view = toolbar_content_container
-                                .findViewById<Toolbar>(R.id.searchview_toolbar)
-                        toolbar_content_container.removeView(view)
-                }
-        }
+//        private fun enableSearchViewToolbarState(){
+//                view?.let { v ->
+//                        val view = View.inflate(
+//                                v.context,
+//                                R.layout.layout_searchview_toolbar_folder,
+//                                null
+//                        )
+//                        view.layoutParams = LinearLayout.LayoutParams(
+//                                LinearLayout.LayoutParams.MATCH_PARENT,
+//                                LinearLayout.LayoutParams.MATCH_PARENT
+//                        )
+//                        toolbar_content_container.addView(view)
+//                        setupSearchView()
+//                        setupFilterButton()
+//                }
+//        }
+//
+//        private fun disableMultiSelectToolbarState(){
+//                view?.let {
+//                        val view = toolbar_content_container
+//                                .findViewById<Toolbar>(R.id.multiselect_toolbar)
+//                        toolbar_content_container.removeView(view)
+////                        viewModel.clearSelectedNotes()
+//                }
+//        }
+//
+//        private fun disableSearchViewToolbarState(){
+//                view?.let {
+//                        val view = toolbar_content_container
+//                                .findViewById<Toolbar>(R.id.searchview_toolbar)
+//                        toolbar_content_container.removeView(view)
+//                }
+//        }
 
         override fun isMultiSelectionModeEnabled()
                 = viewModel.isMultiSelectionStateActive()
@@ -199,14 +209,70 @@ constructor(
         override fun activateMultiSelectionMode()
                 = viewModel.setToolbarState(MultiSelectionState())
 
-        private fun setupSwipeRefresh(){
-                swipe_refresh.setOnRefreshListener {
-                        //startNewSearch()
-                        //swipe_refresh.isRefreshing = false
-                        Log.d("action", "SwipeRefresh")
-                }
+        private fun startNewSearch(){
+                printLogD("DCM", "start new search")
+//                viewModel.clearList()
+//                viewModel.loadFirstPage()
         }
 
+//        private fun setupSwipeRefresh(){
+//                swipe_refresh.setOnRefreshListener {
+//                        startNewSearch()
+//                        swipe_refresh.isRefreshing = false
+//                }
+//        }
+//
+//        private fun setupFilterButton(){
+//                val searchViewToolbar: Toolbar? = toolbar_content_container
+//                        .findViewById<Toolbar>(R.id.searchview_toolbar)
+//                searchViewToolbar?.findViewById<ImageView>(R.id.action_filter)?.setOnClickListener {
+////                        showFilterDialog()
+//                }
+//        }
+//
+//        private fun setupSearchView(){
+//
+//                val searchViewToolbar: Toolbar? = toolbar_content_container
+//                        .findViewById<Toolbar>(R.id.searchview_toolbar)
+//
+//                searchViewToolbar?.let { toolbar ->
+//
+//                        val searchView = toolbar.findViewById<SearchView>(R.id.search_view)
+//
+//                        val searchPlate: SearchView.SearchAutoComplete?
+//                                = searchView.findViewById(androidx.appcompat.R.id.search_src_text)
+//
+//                        // can't use QueryTextListener in production b/c can't submit an empty string
+//                        when{
+//                                androidTestUtils.isTest() -> {
+////                                        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+////                                                override fun onQueryTextSubmit(query: String?): Boolean {
+////                                                        viewModel.setQuery(query)
+////                                                        startNewSearch()
+////                                                        return true
+////                                                }
+////
+////                                                override fun onQueryTextChange(newText: String?): Boolean {
+////                                                        return true
+////                                                }
+////
+////                                        })
+//                                }
+//
+//                                else ->{
+//                                        searchPlate?.setOnEditorActionListener { v, actionId, _ ->
+//                                                if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED
+//                                                        || actionId == EditorInfo.IME_ACTION_SEARCH ) {
+//                                                        val searchQuery = v.text.toString()
+////                                                        viewModel.setQuery(searchQuery)
+//                                                        startNewSearch()
+//                                                }
+//                                                true
+//                                        }
+//                                }
+//                        }
+//                }
+//        }
 
         override fun onItemSelected(position: Int, item: Folder) {
                 Log.d("action", "item: $position")

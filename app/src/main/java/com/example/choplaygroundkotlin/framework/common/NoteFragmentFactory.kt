@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import com.example.choplaygroundkotlin.business.domain.util.DateUtil
 import com.example.choplaygroundkotlin.framework.presentation.folderlist.FolderListFragment
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
@@ -14,7 +15,8 @@ class NoteFragmentFactory
 @Inject
 constructor(
     private val viewModelFactory: ViewModelProvider.Factory,
-    private val dateUtil: DateUtil
+    private val dateUtil: DateUtil,
+    private val firestore: FirebaseFirestore
 ): FragmentFactory(){
 
     override fun instantiate(classLoader: ClassLoader, className: String) =
@@ -22,7 +24,7 @@ constructor(
         when(className){
 
             FolderListFragment::class.java.name -> {
-                val fragment = FolderListFragment(viewModelFactory, dateUtil)
+                val fragment = FolderListFragment(viewModelFactory, dateUtil, firestore)
                 fragment
             }
 
