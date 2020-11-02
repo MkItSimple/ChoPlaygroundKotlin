@@ -1,7 +1,7 @@
 package com.example.choplaygroundkotlin.di
 
 import androidx.lifecycle.ViewModelProvider
-import com.example.choplaygroundkotlin.framework.common.NoteViewModelFactory
+import com.example.choplaygroundkotlin.framework.presentation.common.NoteViewModelFactory
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.ExperimentalCoroutinesApi

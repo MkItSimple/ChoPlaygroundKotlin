@@ -2,7 +2,7 @@ package com.example.choplaygroundkotlin.framework.presentation.folderlist
 
 import androidx.lifecycle.LiveData
 import com.example.choplaygroundkotlin.business.domain.state.StateEvent
-import com.example.choplaygroundkotlin.framework.common.BaseViewModel
+import com.example.choplaygroundkotlin.framework.presentation.common.BaseViewModel
 import com.example.choplaygroundkotlin.framework.presentation.folderlist.state.FolderListInteractionManager
 import com.example.choplaygroundkotlin.framework.presentation.folderlist.state.FolderListToolbarState
 import com.example.choplaygroundkotlin.framework.presentation.folderlist.state.FolderListViewState

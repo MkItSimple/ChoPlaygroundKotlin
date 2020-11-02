@@ -1,4 +1,4 @@
-package com.example.choplaygroundkotlin.framework.common
+package com.example.choplaygroundkotlin.framework.presentation.common
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

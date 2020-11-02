@@ -1,4 +1,4 @@
-package com.example.choplaygroundkotlin.framework.common
+package com.example.choplaygroundkotlin.framework.presentation.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

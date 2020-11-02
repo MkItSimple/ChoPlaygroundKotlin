@@ -1,4 +1,4 @@
-package com.example.choplaygroundkotlin
+package com.example.choplaygroundkotlin.framework.presentation
 
 import android.app.Application
 import com.example.choplaygroundkotlin.di.AppComponent

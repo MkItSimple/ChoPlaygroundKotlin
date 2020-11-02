@@ -1,8 +1,8 @@
 package com.example.choplaygroundkotlin.di
 
-import com.example.choplaygroundkotlin.BaseApplication
+import com.example.choplaygroundkotlin.framework.presentation.BaseApplication
 import com.example.choplaygroundkotlin.framework.presentation.folderlist.FolderListFragment
-import com.example.choplaygroundkotlin.MainActivity
+import com.example.choplaygroundkotlin.framework.presentation.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi

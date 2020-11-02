@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.choplaygroundkotlin.R
 import com.example.choplaygroundkotlin.business.domain.model.Folder
 import com.example.choplaygroundkotlin.business.domain.util.DateUtil
-import com.example.choplaygroundkotlin.framework.common.changeColor
+import com.example.choplaygroundkotlin.framework.presentation.common.changeColor
 import kotlinx.android.synthetic.main.layout_folder_list_item.view.*
 
 class FolderListAdapter(

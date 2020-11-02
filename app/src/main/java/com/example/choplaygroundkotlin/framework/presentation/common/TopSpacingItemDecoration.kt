@@ -1,4 +1,4 @@
-package com.example.choplaygroundkotlin.framework.common
+package com.example.choplaygroundkotlin.framework.presentation.common
 
 import android.graphics.Rect
 import android.view.View
