@@ -8,6 +8,9 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class FolderListViewState(
 
+    var folder: Folder? = null,
+    var isUpdatePending: Boolean? = null,
+
     var folderList: ArrayList<Folder>? = null,
     var newFolder: Folder? = null, // folder that can be created with fab
     var folderPendingDelete: FolderPendingDelete? = null, // set when delete is pending (can be undone)

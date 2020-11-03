@@ -4,7 +4,6 @@ import com.example.choplaygroundkotlin.business.domain.util.DateUtil
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.collections.ArrayList
 
 @Singleton
 class FolderFactory
@@ -21,7 +20,9 @@ constructor(
         return Folder(
             id = id ?: UUID.randomUUID().toString(),
             folder_name = folder_name,
-            notes_count = notes_count
+            notes_count = notes_count,
+            created_at = dateUtil.getCurrentTimestamp(),
+            updated_at = dateUtil.getCurrentTimestamp()
         )
     }
 

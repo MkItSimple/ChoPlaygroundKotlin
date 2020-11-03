@@ -106,9 +106,9 @@ constructor(
                         }
                 })
 
-                for (i in 1..25){
-                        folders.add(Folder("id $i", "f$i", 23))
-                }
+//                for (i in 1..25){
+//                        folders.add(Folder("id $i", "f$i", 23))
+//                }
                 listAdapter?.submitList(folders)
                 //listAdapter?.notifyDataSetChanged()
         }
