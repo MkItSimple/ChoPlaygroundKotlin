@@ -28,8 +28,7 @@ class InsertNewFolder(
 
         val newFolder = folderFactory.createSingleFolder(
             id = id ?: UUID.randomUUID().toString(),
-            folder_name = folder_name,
-            notes_count = 0
+            folder_name = folder_name
         )
         val cacheResult = safeCacheCall(IO){
             folderCacheDataSource.insertFolder(newFolder)
@@ -47,7 +46,7 @@ class InsertNewFolder(
                         )
                     DataState.data(
                         response = Response(
-                            message = INSERT_NOTE_SUCCESS,
+                            message = INSERT_FOLDER_SUCCESS,
                             uiComponentType = UIComponentType.Toast(),
                             messageType = MessageType.Success()
                         ),
@@ -58,7 +57,7 @@ class InsertNewFolder(
                 else{
                     DataState.data(
                         response = Response(
-                            message = INSERT_NOTE_FAILED,
+                            message = INSERT_FOLDER_FAILED,
                             uiComponentType = UIComponentType.Toast(),
                             messageType = MessageType.Error()
                         ),
@@ -75,7 +74,7 @@ class InsertNewFolder(
     }
 
     private suspend fun updateNetwork(cacheResponse: String?, newFolder: Folder ){
-        if(cacheResponse.equals(INSERT_NOTE_SUCCESS)){
+        if(cacheResponse.equals(INSERT_FOLDER_SUCCESS)){
 
             safeApiCall(IO){
                 folderNetworkDataSource.insertOrUpdateFolder(newFolder)
@@ -84,7 +83,7 @@ class InsertNewFolder(
     }
 
     companion object{
-        val INSERT_NOTE_SUCCESS = "Successfully inserted new folder."
-        val INSERT_NOTE_FAILED = "Failed to insert new folder."
+        val INSERT_FOLDER_SUCCESS = "Successfully inserted new folder."
+        val INSERT_FOLDER_FAILED = "Failed to insert new folder."
     }
 }

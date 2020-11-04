@@ -7,7 +7,6 @@ import kotlinx.android.parcel.Parcelize
 data class Folder(
     val id: String,
     val folder_name: String,
-    val notes_count: Int,
     val updated_at: String,
     val created_at: String
 ) : Parcelable{
@@ -20,7 +19,6 @@ data class Folder(
 
         if (id != other.id) return false
         if (folder_name != other.folder_name) return false
-        if (notes_count != other.notes_count) return false
 
         return true
     }
@@ -28,7 +26,6 @@ data class Folder(
     override fun hashCode(): Int {
         var result = id.hashCode()
         result = 31 * result + folder_name.hashCode()
-        result = 31 * result + notes_count.hashCode()
         result = 31 * result + created_at.hashCode()
         return result
     }

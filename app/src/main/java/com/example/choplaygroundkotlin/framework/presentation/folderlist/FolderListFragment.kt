@@ -23,6 +23,8 @@ import com.example.choplaygroundkotlin.business.domain.state.DialogInputCaptureC
 import com.example.choplaygroundkotlin.business.domain.util.DateUtil
 import com.example.choplaygroundkotlin.framework.presentation.common.BaseNoteFragment
 import com.example.choplaygroundkotlin.framework.presentation.common.TopSpacingItemDecoration
+import com.example.choplaygroundkotlin.framework.presentation.folderlist.state.FolderListStateEvent
+import com.example.choplaygroundkotlin.framework.presentation.folderlist.state.FolderListStateEvent.*
 import com.example.choplaygroundkotlin.framework.presentation.folderlist.state.FolderListToolbarState.*
 import com.example.choplaygroundkotlin.util.AndroidTestUtils
 import com.example.choplaygroundkotlin.util.printLogD
@@ -260,12 +262,12 @@ constructor(
                                 object: DialogInputCaptureCallback {
                                         override fun onTextCaptured(text: String) {
                                                 Log.d("action", "add_new_note_fab $text")
-//                                                val newNote = viewModel.createNewNote(title = text)
-//                                                viewModel.setStateEvent(
-//                                                        InsertNewNoteEvent(
-//                                                                title = newNote.title
-//                                                        )
-//                                                )
+                                                val newFolder = viewModel.createNewFolder(folder_name = text)
+                                                viewModel.setStateEvent(
+                                                        InsertNewFolderEvent(
+                                                                folder_name = newFolder.folder_name
+                                                        )
+                                                )
                                         }
                                 }
                         )

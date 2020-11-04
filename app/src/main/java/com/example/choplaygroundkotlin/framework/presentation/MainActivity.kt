@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.input.input
@@ -62,11 +64,11 @@ class MainActivity : AppCompatActivity(),
             main_progress_bar.gone()
     }
 
-//    override fun onSupportNavigateUp(): Boolean {
-//        return findNavController(R.id.nav_host_fragment)
-//            .navigateUp(appBarConfiguration as AppBarConfiguration)
-//                || super.onSupportNavigateUp()
-//    }
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.nav_host_fragment)
+            .navigateUp(appBarConfiguration as AppBarConfiguration)
+                || super.onSupportNavigateUp()
+    }
 
     override fun displayInputCaptureDialog(
         title: String,

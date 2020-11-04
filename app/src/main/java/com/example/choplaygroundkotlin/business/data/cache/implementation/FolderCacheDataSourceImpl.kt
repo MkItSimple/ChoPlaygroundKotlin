@@ -28,13 +28,11 @@ constructor(
     override suspend fun updateFolder(
         primaryKey: String,
         newFolderName: String,
-        newNotesCount: Int?,
         timestamp: String?
     ): Int {
         return folderDaoService.updateFolder(
             primaryKey,
             newFolderName,
-            newNotesCount,
             timestamp
         )
     }

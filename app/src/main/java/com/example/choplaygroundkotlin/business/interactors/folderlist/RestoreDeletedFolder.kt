@@ -41,7 +41,7 @@ class RestoreDeletedFolder(
                         )
                     DataState.data(
                         response = Response(
-                            message = RESTORE_NOTE_SUCCESS,
+                            message = RESTORE_FOLDER_SUCCESS,
                             uiComponentType = UIComponentType.Toast(),
                             messageType = MessageType.Success()
                         ),
@@ -52,7 +52,7 @@ class RestoreDeletedFolder(
                 else{
                     DataState.data(
                         response = Response(
-                            message = RESTORE_NOTE_FAILED,
+                            message = RESTORE_FOLDER_FAILED,
                             uiComponentType = UIComponentType.Toast(),
                             messageType = MessageType.Error()
                         ),
@@ -69,7 +69,7 @@ class RestoreDeletedFolder(
     }
 
     private suspend fun updateNetwork(response: String?, folder: Folder) {
-        if(response.equals(RESTORE_NOTE_SUCCESS)){
+        if(response.equals(RESTORE_FOLDER_SUCCESS)){
 
             // insert into "folders" node
             safeApiCall(IO){
@@ -85,8 +85,8 @@ class RestoreDeletedFolder(
 
     companion object{
 
-        val RESTORE_NOTE_SUCCESS = "Successfully restored the deleted folder."
-        val RESTORE_NOTE_FAILED = "Failed to restore the deleted folder."
+        val RESTORE_FOLDER_SUCCESS = "Successfully restored the deleted folder."
+        val RESTORE_FOLDER_FAILED = "Failed to restore the deleted folder."
 
     }
 }

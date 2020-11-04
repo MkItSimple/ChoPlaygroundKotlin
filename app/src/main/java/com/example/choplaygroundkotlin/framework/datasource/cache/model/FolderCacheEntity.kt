@@ -14,9 +14,6 @@ data class FolderCacheEntity(
     @ColumnInfo(name = "folder_name")
     var folder_name: String,
 
-    @ColumnInfo(name = "notes_count")
-    var notes_count: Int,
-
     @ColumnInfo(name = "updated_at")
     var updated_at: String,
 
@@ -46,7 +43,6 @@ data class FolderCacheEntity(
 
         if (id != other.id) return false
         if (folder_name != other.folder_name) return false
-        if (notes_count != other.notes_count) return false
         if (created_at != other.created_at) return false
 
         return true
@@ -55,7 +51,6 @@ data class FolderCacheEntity(
     override fun hashCode(): Int {
         var result = id.hashCode()
         result = 31 * result + folder_name.hashCode()
-        result = 31 * result + notes_count.hashCode()
         result = 31 * result + updated_at.hashCode()
         result = 31 * result + created_at.hashCode()
         return result

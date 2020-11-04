@@ -3,7 +3,7 @@ package com.example.choplaygroundkotlin.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
-import com.example.choplaygroundkotlin.framework.datasource.cache.database.AppDatabase
+import com.example.choplaygroundkotlin.framework.datasource.cache.database.NoteDatabase
 import com.example.choplaygroundkotlin.framework.datasource.preferences.PreferenceKeys
 import com.example.choplaygroundkotlin.framework.presentation.BaseApplication
 import com.example.choplaygroundkotlin.util.AndroidTestUtils
@@ -38,7 +38,7 @@ object ProductionModule {
     ): SharedPreferences {
         return application
             .getSharedPreferences(
-                PreferenceKeys.NOTE_PREFERENCES,
+                PreferenceKeys.FOLDER_PREFERENCES,
                 Context.MODE_PRIVATE
             )
     }
@@ -46,9 +46,9 @@ object ProductionModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideAppDb(app: BaseApplication): AppDatabase {
+    fun provideNoteDb(app: BaseApplication): NoteDatabase {
         return Room
-            .databaseBuilder(app, AppDatabase::class.java, AppDatabase.DATABASE_NAME)
+            .databaseBuilder(app, NoteDatabase::class.java, NoteDatabase.DATABASE_NAME)
             .fallbackToDestructiveMigration()
             .build()
     }
@@ -59,4 +59,5 @@ object ProductionModule {
     fun provideFirebaseFirestore(): FirebaseFirestore {
         return FirebaseFirestore.getInstance()
     }
+
 }

@@ -26,7 +26,6 @@ class UpdateFolder(
             folderCacheDataSource.updateFolder(
                 primaryKey = folder.id,
                 newFolderName = folder.folder_name,
-                newNotesCount = folder.notes_count,
                 timestamp = null // generate new timestamp
             )
         }

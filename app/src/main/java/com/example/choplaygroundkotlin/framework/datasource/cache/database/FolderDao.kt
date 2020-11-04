@@ -39,15 +39,13 @@ interface FolderDao {
     @Query("""
         UPDATE folders 
         SET 
-        folder_name = :folder_name, 
-        notes_count = :notes_count,
+        folder_name = :folder_name,
         updated_at = :updated_at
         WHERE id = :primaryKey
         """)
     suspend fun updateFolder(
         primaryKey: String,
         folder_name: String,
-        notes_count: Int?,
         updated_at: String
     ): Int
 
@@ -60,7 +58,6 @@ interface FolderDao {
     @Query("""
         SELECT * FROM folders 
         WHERE folder_name LIKE '%' || :query || '%' 
-        OR notes_count LIKE '%' || :query || '%' 
         ORDER BY updated_at DESC LIMIT (:page * :pageSize)
         """)
     suspend fun searchFoldersOrderByDateDESC(
@@ -71,8 +68,7 @@ interface FolderDao {
 
     @Query("""
         SELECT * FROM folders 
-        WHERE folder_name LIKE '%' || :query || '%' 
-        OR notes_count LIKE '%' || :query || '%' 
+        WHERE folder_name LIKE '%' || :query || '%'  
         ORDER BY updated_at ASC LIMIT (:page * :pageSize)
         """)
     suspend fun searchFoldersOrderByDateASC(
@@ -84,7 +80,6 @@ interface FolderDao {
     @Query("""
         SELECT * FROM folders 
         WHERE folder_name LIKE '%' || :query || '%' 
-        OR notes_count LIKE '%' || :query || '%' 
         ORDER BY folder_name DESC LIMIT (:page * :pageSize)
         """)
     suspend fun searchFoldersOrderByTitleDESC(
@@ -96,7 +91,6 @@ interface FolderDao {
     @Query("""
         SELECT * FROM folders 
         WHERE folder_name LIKE '%' || :query || '%' 
-        OR notes_count LIKE '%' || :query || '%' 
         ORDER BY folder_name ASC LIMIT (:page * :pageSize)
         """)
     suspend fun searchFoldersOrderByTitleASC(

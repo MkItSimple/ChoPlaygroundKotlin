@@ -65,7 +65,7 @@ class DeleteMultipleFolders(
             emit(
                 DataState.data<FolderListViewState>(
                     response = Response(
-                        message = DELETE_NOTES_ERRORS,
+                        message = DELETE_FOLDERS_ERRORS,
                         uiComponentType = UIComponentType.Dialog(),
                         messageType = MessageType.Success()
                     ),
@@ -78,7 +78,7 @@ class DeleteMultipleFolders(
             emit(
                 DataState.data<FolderListViewState>(
                     response = Response(
-                        message = DELETE_NOTES_SUCCESS,
+                        message = DELETE_FOLDERS_SUCCESS,
                         uiComponentType = UIComponentType.Toast(),
                         messageType = MessageType.Success()
                     ),
@@ -107,10 +107,10 @@ class DeleteMultipleFolders(
     }
 
     companion object{
-        val DELETE_NOTES_SUCCESS = "Successfully deleted folders."
-        val DELETE_NOTES_ERRORS = "Not all the folders you selected were deleted. There was some errors."
-        val DELETE_NOTES_YOU_MUST_SELECT = "You haven't selected any folders to delete."
-        val DELETE_NOTES_ARE_YOU_SURE = "Are you sure you want to delete these?"
+        val DELETE_FOLDERS_SUCCESS = "Successfully deleted folders."
+        val DELETE_FOLDERS_ERRORS = "Not all the folders you selected were deleted. There was some errors."
+        val DELETE_FOLDERS_YOU_MUST_SELECT = "You haven't selected any folders to delete."
+        val DELETE_FOLDERS_ARE_YOU_SURE = "Are you sure you want to delete these?"
     }
 }
 

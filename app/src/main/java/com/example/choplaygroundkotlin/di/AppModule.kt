@@ -1,5 +1,6 @@
 package com.example.choplaygroundkotlin.di
 
+import android.content.SharedPreferences
 import com.example.choplaygroundkotlin.business.data.cache.abstraction.FolderCacheDataSource
 import com.example.choplaygroundkotlin.business.data.cache.implementation.FolderCacheDataSourceImpl
 import com.example.choplaygroundkotlin.business.data.network.abstraction.FolderNetworkDataSource
@@ -9,8 +10,8 @@ import com.example.choplaygroundkotlin.business.domain.util.DateUtil
 import com.example.choplaygroundkotlin.business.interactors.common.DeleteFolder
 import com.example.choplaygroundkotlin.business.interactors.folderlist.*
 import com.example.choplaygroundkotlin.framework.datasource.cache.abstraction.FolderDaoService
-import com.example.choplaygroundkotlin.framework.datasource.cache.database.AppDatabase
 import com.example.choplaygroundkotlin.framework.datasource.cache.database.FolderDao
+import com.example.choplaygroundkotlin.framework.datasource.cache.database.NoteDatabase
 import com.example.choplaygroundkotlin.framework.datasource.cache.implementation.FolderDaoServiceImpl
 import com.example.choplaygroundkotlin.framework.datasource.cache.mappers.FolderCacheMapper
 import com.example.choplaygroundkotlin.framework.datasource.network.abstraction.FolderFirestoreService
@@ -30,6 +31,7 @@ import javax.inject.Singleton
 @FlowPreview
 @Module
 object AppModule {
+
 
     // https://developer.android.com/reference/java/text/SimpleDateFormat.html?hl=pt-br
     @JvmStatic
@@ -53,6 +55,15 @@ object AppModule {
     @JvmStatic
     @Singleton
     @Provides
+    fun provideSharedPrefsEditor(
+        sharedPreferences: SharedPreferences
+    ): SharedPreferences.Editor {
+        return sharedPreferences.edit()
+    }
+
+    @JvmStatic
+    @Singleton
+    @Provides
     fun provideFolderFactory(dateUtil: DateUtil): FolderFactory {
         return FolderFactory(
             dateUtil
@@ -62,15 +73,8 @@ object AppModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideFirebaseAuth(): FirebaseAuth {
-        return FirebaseAuth.getInstance()
-    }
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideFolderDAO(appDatabase: AppDatabase): FolderDao {
-        return appDatabase.folderDao()
+    fun provideFolderDAO(noteDatabase: NoteDatabase): FolderDao {
+        return noteDatabase.folderDao()
     }
 
     @JvmStatic
@@ -90,11 +94,18 @@ object AppModule {
     @JvmStatic
     @Singleton
     @Provides
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
+    }
+
+    @JvmStatic
+    @Singleton
+    @Provides
     fun provideFolderDaoService(
         folderDao: FolderDao,
         folderEntityMapper: FolderCacheMapper,
         dateUtil: DateUtil
-    ): FolderDaoService {
+    ): FolderDaoService{
         return FolderDaoServiceImpl(folderDao, folderEntityMapper, dateUtil)
     }
 
@@ -151,4 +162,47 @@ object AppModule {
             InsertMultipleFolders(folderCacheDataSource, folderNetworkDataSource)
         )
     }
+
+//    @JvmStatic
+//    @Singleton
+//    @Provides
+//    fun provideSyncFolders(
+//        folderCacheDataSource: FolderCacheDataSource,
+//        folderNetworkDataSource: FolderNetworkDataSource,
+//        dateUtil: DateUtil
+//    ): SyncFolders{
+//        return SyncFolders(
+//            folderCacheDataSource,
+//            folderNetworkDataSource,
+//            dateUtil
+//
+//        )
+//    }
+//
+//    @JvmStatic
+//    @Singleton
+//    @Provides
+//    fun provideSyncDeletedFolders(
+//        folderCacheDataSource: FolderCacheDataSource,
+//        folderNetworkDataSource: FolderNetworkDataSource
+//    ): SyncDeletedFolders{
+//        return SyncDeletedFolders(
+//            folderCacheDataSource,
+//            folderNetworkDataSource
+//        )
+//    }
+//
+//    @JvmStatic
+//    @Singleton
+//    @Provides
+//    fun provideFolderNetworkSyncManager(
+//        syncFolders: SyncFolders,
+//        deletedFolders: SyncDeletedFolders
+//    ): FolderNetworkSyncManager {
+//        return FolderNetworkSyncManager(
+//            syncFolders,
+//            deletedFolders
+//        )
+//    }
+
 }

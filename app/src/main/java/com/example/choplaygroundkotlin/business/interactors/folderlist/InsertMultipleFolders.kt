@@ -73,7 +73,6 @@ private object FolderListTester {
         val folder = Folder(
             id = UUID.randomUUID().toString(),
             folder_name = UUID.randomUUID().toString(),
-            notes_count = 0,
             created_at = dateUtil.getCurrentTimestamp(),
             updated_at = dateUtil.getCurrentTimestamp()
         )

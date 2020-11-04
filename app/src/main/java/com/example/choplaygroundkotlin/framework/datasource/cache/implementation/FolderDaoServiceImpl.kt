@@ -37,21 +37,18 @@ constructor(
     override suspend fun updateFolder(
         primaryKey: String,
         folder_name: String,
-        notes_count: Int?,
         timestamp: String?
     ): Int {
         return if(timestamp != null){
             folderDao.updateFolder(
                 primaryKey = primaryKey,
                 folder_name = folder_name,
-                notes_count = notes_count,
                 updated_at = timestamp
             )
         }else{
             folderDao.updateFolder(
                 primaryKey = primaryKey,
                 folder_name = folder_name,
-                notes_count = notes_count,
                 updated_at = dateUtil.getCurrentTimestamp()
             )
         }

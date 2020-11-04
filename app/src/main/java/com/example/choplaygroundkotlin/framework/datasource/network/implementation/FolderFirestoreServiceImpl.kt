@@ -33,9 +33,9 @@ constructor(
         val entity = networkMapper.mapToEntity(folder)
         entity.updated_at = Timestamp.now() // for updates
         firestore
-            .collection(NOTES_COLLECTION)
+            .collection(FOLDERS_COLLECTION)
             .document(USER_ID)
-            .collection(NOTES_COLLECTION)
+            .collection(FOLDERS_COLLECTION)
             .document(entity.id)
             .set(entity)
             .addOnFailureListener {
@@ -47,9 +47,9 @@ constructor(
 
     override suspend fun deleteFolder(primaryKey: String) {
         firestore
-            .collection(NOTES_COLLECTION)
+            .collection(FOLDERS_COLLECTION)
             .document(USER_ID)
-            .collection(NOTES_COLLECTION)
+            .collection(FOLDERS_COLLECTION)
             .document(primaryKey)
             .delete()
             .addOnFailureListener {
@@ -64,7 +64,7 @@ constructor(
         firestore
             .collection(DELETES_COLLECTION)
             .document(USER_ID)
-            .collection(NOTES_COLLECTION)
+            .collection(FOLDERS_COLLECTION)
             .document(entity.id)
             .set(entity)
             .addOnFailureListener {
@@ -82,7 +82,7 @@ constructor(
         val collectionRef = firestore
             .collection(DELETES_COLLECTION)
             .document(USER_ID)
-            .collection(NOTES_COLLECTION)
+            .collection(FOLDERS_COLLECTION)
 
         firestore.runBatch { batch ->
             for(folder in folders){
@@ -100,7 +100,7 @@ constructor(
         firestore
             .collection(DELETES_COLLECTION)
             .document(USER_ID)
-            .collection(NOTES_COLLECTION)
+            .collection(FOLDERS_COLLECTION)
             .document(entity.id)
             .delete()
             .addOnFailureListener {
@@ -113,7 +113,7 @@ constructor(
     // used in testing
     override suspend fun deleteAllFolders() {
         firestore
-            .collection(NOTES_COLLECTION)
+            .collection(FOLDERS_COLLECTION)
             .document(USER_ID)
             .delete()
             .await()
@@ -129,7 +129,7 @@ constructor(
             firestore
                 .collection(DELETES_COLLECTION)
                 .document(USER_ID)
-                .collection(NOTES_COLLECTION)
+                .collection(FOLDERS_COLLECTION)
                 .get()
                 .addOnFailureListener {
                     // send error reports to Firebase Crashlytics
@@ -141,9 +141,9 @@ constructor(
 
     override suspend fun searchFolder(folder: Folder): Folder? {
         return firestore
-            .collection(NOTES_COLLECTION)
+            .collection(FOLDERS_COLLECTION)
             .document(USER_ID)
-            .collection(NOTES_COLLECTION)
+            .collection(FOLDERS_COLLECTION)
             .document(folder.id)
             .get()
             .addOnFailureListener {
@@ -159,9 +159,9 @@ constructor(
     override suspend fun getAllFolders(): List<Folder> {
         return networkMapper.entityListToFolderList(
             firestore
-                .collection(NOTES_COLLECTION)
+                .collection(FOLDERS_COLLECTION)
                 .document(USER_ID)
-                .collection(NOTES_COLLECTION)
+                .collection(FOLDERS_COLLECTION)
                 .get()
                 .addOnFailureListener {
                     // send error reports to Firebase Crashlytics
@@ -179,9 +179,9 @@ constructor(
         }
 
         val collectionRef = firestore
-            .collection(NOTES_COLLECTION)
+            .collection(FOLDERS_COLLECTION)
             .document(USER_ID)
-            .collection(NOTES_COLLECTION)
+            .collection(FOLDERS_COLLECTION)
 
         firestore.runBatch { batch ->
             for(folder in folders){
@@ -198,7 +198,7 @@ constructor(
     }
 
     companion object {
-        const val NOTES_COLLECTION = "folders"
+        const val FOLDERS_COLLECTION = "folders"
         const val USERS_COLLECTION = "users"
         const val DELETES_COLLECTION = "deletes"
         const val USER_ID = "9E7fDYAUTNUPFirw4R28NhBZE1u1" // hardcoded for single user

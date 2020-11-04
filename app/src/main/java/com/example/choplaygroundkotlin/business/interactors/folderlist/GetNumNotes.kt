@@ -30,7 +30,7 @@ class GetNumFolders(
                 )
                 return DataState.data(
                     response = Response(
-                        message = GET_NUM_NOTES_SUCCESS,
+                        message = GET_NUM_FOLDERS_SUCCESS,
                         uiComponentType = UIComponentType.None(),
                         messageType = MessageType.Success()
                     ),
@@ -44,7 +44,7 @@ class GetNumFolders(
     }
 
     companion object{
-        val GET_NUM_NOTES_SUCCESS = "Successfully retrieved the number of folders from the cache."
-        val GET_NUM_NOTES_FAILED = "Failed to get the number of folders from the cache."
+        val GET_NUM_FOLDERS_SUCCESS = "Successfully retrieved the number of folders from the cache."
+        val GET_NUM_FOLDERS_FAILED = "Failed to get the number of folders from the cache."
     }
 }

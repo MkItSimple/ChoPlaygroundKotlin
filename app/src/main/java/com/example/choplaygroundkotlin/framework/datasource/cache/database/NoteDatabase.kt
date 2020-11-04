@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.choplaygroundkotlin.framework.datasource.cache.model.FolderCacheEntity
 
 @Database(entities = [FolderCacheEntity::class], version = 1)
-abstract class AppDatabase: RoomDatabase() {
+abstract class NoteDatabase: RoomDatabase() {
 
     abstract fun folderDao(): FolderDao
 

@@ -14,7 +14,6 @@ interface FolderDaoService {
     suspend fun updateFolder(
         primaryKey: String,
         folder_name: String,
-        notes_count: Int?,
         timestamp: String?
     ): Int
 

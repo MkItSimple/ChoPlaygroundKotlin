@@ -13,7 +13,6 @@ interface FolderCacheDataSource{
     suspend fun updateFolder(
         primaryKey: String,
         newFolderName: String,
-        newNotesCount: Int?,
         timestamp: String?
     ): Int
 

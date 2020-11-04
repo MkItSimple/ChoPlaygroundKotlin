@@ -38,11 +38,11 @@ class SearchFolders(
         ){
             override suspend fun handleSuccess(resultObj: List<Folder>): DataState<FolderListViewState>? {
                 var message: String? =
-                    SEARCH_NOTES_SUCCESS
+                    SEARCH_FOLDERS_SUCCESS
                 var uiComponentType: UIComponentType? = UIComponentType.None()
                 if(resultObj.size == 0){
                     message =
-                        SEARCH_NOTES_NO_MATCHING_RESULTS
+                        SEARCH_FOLDERS_NO_MATCHING_RESULTS
                     uiComponentType = UIComponentType.Toast()
                 }
                 return DataState.data(
@@ -63,9 +63,9 @@ class SearchFolders(
     }
 
     companion object{
-        val SEARCH_NOTES_SUCCESS = "Successfully retrieved list of folders."
-        val SEARCH_NOTES_NO_MATCHING_RESULTS = "There are no folders that match that query."
-        val SEARCH_NOTES_FAILED = "Failed to retrieve the list of folders."
+        val SEARCH_FOLDERS_SUCCESS = "Successfully retrieved list of folders."
+        val SEARCH_FOLDERS_NO_MATCHING_RESULTS = "There are no folders that match that query."
+        val SEARCH_FOLDERS_FAILED = "Failed to retrieve the list of folders."
 
     }
 }

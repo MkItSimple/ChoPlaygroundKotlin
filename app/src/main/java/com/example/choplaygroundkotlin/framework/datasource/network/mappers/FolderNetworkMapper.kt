@@ -36,7 +36,6 @@ constructor(
         return Folder(
             id = entity.id,
             folder_name = entity.folder_name,
-            notes_count = entity.notes_count,
             updated_at = dateUtil.convertFirebaseTimestampToStringData(entity.updated_at),
             created_at = dateUtil.convertFirebaseTimestampToStringData(entity.created_at)
         )
@@ -46,7 +45,6 @@ constructor(
         return FolderNetworkEntity(
             id = domainModel.id,
             folder_name = domainModel.folder_name,
-            notes_count = domainModel.notes_count,
             updated_at = dateUtil.convertStringDateToFirebaseTimestamp(domainModel.updated_at),
             created_at = dateUtil.convertStringDateToFirebaseTimestamp(domainModel.created_at)
         )

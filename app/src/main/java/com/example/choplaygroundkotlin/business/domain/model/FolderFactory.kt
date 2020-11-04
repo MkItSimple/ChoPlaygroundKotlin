@@ -14,13 +14,11 @@ constructor(
 
     fun createSingleFolder(
         id: String? = null,
-        folder_name: String,
-        notes_count: Int
+        folder_name: String
     ): Folder {
         return Folder(
             id = id ?: UUID.randomUUID().toString(),
             folder_name = folder_name,
-            notes_count = notes_count,
             created_at = dateUtil.getCurrentTimestamp(),
             updated_at = dateUtil.getCurrentTimestamp()
         )

@@ -36,7 +36,6 @@ constructor(
         return Folder(
             id = entity.id,
             folder_name = entity.folder_name,
-            notes_count = entity.notes_count,
             updated_at = entity.updated_at,
             created_at = entity.created_at
         )
@@ -46,7 +45,6 @@ constructor(
         return FolderCacheEntity(
             id = domainModel.id,
             folder_name = domainModel.folder_name,
-            notes_count = domainModel.notes_count,
             updated_at = domainModel.updated_at,
             created_at = domainModel.created_at
         )

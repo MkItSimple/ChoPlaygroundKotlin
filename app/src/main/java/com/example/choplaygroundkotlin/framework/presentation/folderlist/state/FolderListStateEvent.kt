@@ -8,7 +8,7 @@ import com.example.choplaygroundkotlin.business.domain.state.StateMessage
 sealed class FolderListStateEvent: StateEvent {
 
     class InsertNewFolderEvent(
-        val title: String
+        val folder_name: String
     ): FolderListStateEvent() {
 
         override fun errorInfo(): String {
