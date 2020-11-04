@@ -1,5 +1,6 @@
 package com.example.choplaygroundkotlin.framework.presentation.folderlist
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.viewModels
@@ -19,19 +21,28 @@ import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
 import com.example.choplaygroundkotlin.R
 import com.example.choplaygroundkotlin.business.domain.model.Folder
-import com.example.choplaygroundkotlin.business.domain.state.DialogInputCaptureCallback
+import com.example.choplaygroundkotlin.business.domain.state.*
 import com.example.choplaygroundkotlin.business.domain.util.DateUtil
+import com.example.choplaygroundkotlin.business.interactors.common.DeleteFolder.Companion.DELETE_FOLDER_PENDING
+import com.example.choplaygroundkotlin.business.interactors.common.DeleteFolder.Companion.DELETE_FOLDER_SUCCESS
+import com.example.choplaygroundkotlin.framework.datasource.cache.database.FOLDER_FILTER_DATE_CREATED
+import com.example.choplaygroundkotlin.framework.datasource.cache.database.FOLDER_FILTER_TITLE
+import com.example.choplaygroundkotlin.framework.datasource.cache.database.FOLDER_ORDER_ASC
+import com.example.choplaygroundkotlin.framework.datasource.cache.database.FOLDER_ORDER_DESC
 import com.example.choplaygroundkotlin.framework.presentation.common.BaseNoteFragment
 import com.example.choplaygroundkotlin.framework.presentation.common.TopSpacingItemDecoration
-import com.example.choplaygroundkotlin.framework.presentation.folderlist.state.FolderListStateEvent
 import com.example.choplaygroundkotlin.framework.presentation.folderlist.state.FolderListStateEvent.*
 import com.example.choplaygroundkotlin.framework.presentation.folderlist.state.FolderListToolbarState.*
+import com.example.choplaygroundkotlin.framework.presentation.folderlist.state.FolderListViewState
 import com.example.choplaygroundkotlin.util.AndroidTestUtils
+import com.example.choplaygroundkotlin.util.TodoCallback
 import com.example.choplaygroundkotlin.util.printLogD
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_folder_list.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
+
+const val FOLDER_LIST_STATE_BUNDLE_KEY = "com.codingwithmitch.cleannotes.notes.framework.presentation.folderlist.state"
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -53,41 +64,87 @@ constructor(
 
         private var listAdapter: FolderListAdapter? = null
         private var itemTouchHelper: ItemTouchHelper? = null
-        private var folders = mutableListOf<Folder>()
 
-        private var ids =  mutableListOf<String>()
-        private var folder_names =  mutableListOf<String>()
-        private var n_counts =  mutableListOf<Int>()
+        override fun onCreate(savedInstanceState: Bundle?) {
+                super.onCreate(savedInstanceState)
+                viewModel.setupChannel()
+                arguments?.let { args ->
+                        args.getParcelable<Folder>(FOLDER_PENDING_DELETE_BUNDLE_KEY)?.let { note ->
+                                viewModel.setFolderPendingDelete(note)
+                                showUndoSnackBarDeleteFolder()
+                                clearArgs()
+                        }
+                }
+        }
+
+        private fun showUndoSnackBarDeleteFolder(){
+                uiController.onResponseReceived(
+                        response = Response(
+                                message = DELETE_FOLDER_PENDING,
+                                uiComponentType = UIComponentType.SnackBar(
+                                        undoCallback = object : SnackbarUndoCallback {
+                                                override fun undo() {
+                                                        viewModel.undoDelete()
+                                                }
+                                        },
+                                        onDismissCallback = object: TodoCallback {
+                                                override fun execute() {
+                                                        // if the folder is not restored, clear pending folder
+                                                        viewModel.setFolderPendingDelete(null)
+                                                }
+                                        }
+                                ),
+                                messageType = MessageType.Info()
+                        ),
+                        stateMessageCallback = object: StateMessageCallback{
+                                override fun removeMessageFromStack() {
+                                        viewModel.clearStateMessage()
+                                }
+                        }
+                )
+        }
+
+        private fun clearArgs(){
+                arguments?.clear()
+        }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
                 super.onViewCreated(view, savedInstanceState)
-                getAppComponent()
-
-                //listFilm = ArrayList()
-
-                postToList()
 
                 setupRecyclerView()
                 setupSwipeRefresh()
                 setupFAB()
                 subscribeObservers()
-//                restoreInstanceState(savedInstanceState)
+                restoreInstanceState(savedInstanceState)
         }
 
+        private fun restoreInstanceState(savedInstanceState: Bundle?) {
+                savedInstanceState?.let { inState ->
+                        (inState[FOLDER_LIST_STATE_BUNDLE_KEY] as FolderListViewState?)?.let { viewState ->
+                                viewModel.setViewState(viewState)
+                        }
+                }
+        }
 
-        private fun addToList(id: String, folder_name: String, folder_counts: Int) {
-                ids.add(id)
-                folder_names.add(folder_name)
-                n_counts.add(folder_counts)
+        override fun onResume() {
+                super.onResume()
+                viewModel.retrieveNumFoldersInCache()
+                viewModel.clearList()
+                viewModel.refreshSearchQuery()
+        }
+
+        override fun onPause() {
+                super.onPause()
+                saveLayoutManagerState()
         }
 
         override fun inject() {
                 getAppComponent().inject(this)
         }
 
-        private fun postToList() {
-                for (i in 1..25){
-                        addToList("ID $i", "Folder $i", 5 + i)
+        private fun saveLayoutManagerState(){
+                recycler_view.layoutManager?.onSaveInstanceState()?.let { lmState ->
+                        viewModel.setLayoutManagerState(lmState)
                 }
         }
 
@@ -108,11 +165,50 @@ constructor(
                         }
                 })
 
-//                for (i in 1..25){
-//                        folders.add(Folder("id $i", "f$i", 23))
-//                }
-                listAdapter?.submitList(folders)
-                //listAdapter?.notifyDataSetChanged()
+                viewModel.viewState.observe(viewLifecycleOwner, Observer{ viewState ->
+
+                        if(viewState != null){
+                                viewState.folderList?.let { folderList ->
+                                        if(viewModel.isPaginationExhausted()
+                                                && !viewModel.isQueryExhausted()){
+                                                viewModel.setQueryExhausted(true)
+                                        }
+                                        listAdapter?.submitList(folderList)
+                                        listAdapter?.notifyDataSetChanged()
+                                }
+
+                                // a folder been inserted or selected
+                                viewState.newFolder?.let { newFolder ->
+                                        //navigateToDetailFragment(newFolder)
+                                }
+
+                        }
+                })
+
+                viewModel.shouldDisplayProgressBar.observe(viewLifecycleOwner, Observer {
+                        //printActiveJobs()
+                        uiController.displayProgressBar(it)
+                })
+
+                viewModel.stateMessage.observe(viewLifecycleOwner, Observer { stateMessage ->
+                        stateMessage?.let { message ->
+                                if(message.response.message?.equals(DELETE_FOLDER_SUCCESS) == true){
+                                        showUndoSnackBarDeleteFolder()
+                                }
+                                else{
+                                        uiController.onResponseReceived(
+                                                response = message.response,
+                                                stateMessageCallback = object:
+                                                        StateMessageCallback {
+                                                        override fun removeMessageFromStack() {
+                                                                viewModel.clearStateMessage()
+                                                                viewModel.refreshSearchQuery()
+                                                        }
+                                                }
+                                        )
+                                }
+                        }
+                })
         }
 
         private fun setupRecyclerView() {
@@ -201,26 +297,29 @@ constructor(
                         // can't use QueryTextListener in production b/c can't submit an empty string
                         when{
                                 androidTestUtils.isTest() -> {
-//                                        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-//                                                override fun onQueryTextSubmit(query: String?): Boolean {
-//                                                        viewModel.setQuery(query)
-//                                                        startNewSearch()
-//                                                        return true
-//                                                }
-//
-//                                                override fun onQueryTextChange(newText: String?): Boolean {
-//                                                        return true
-//                                                }
-//
-//                                        })
+                                        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+                                                override fun onQueryTextSubmit(query: String?): Boolean {
+                                                        Log.d("action", "onQueryTextSubmit")
+                                                        viewModel.setQuery(query)
+                                                        startNewSearch()
+                                                        return true
+                                                }
+
+                                                override fun onQueryTextChange(newText: String?): Boolean {
+                                                        Log.d("action", "onQueryTextChange")
+                                                        return true
+                                                }
+
+                                        })
                                 }
 
                                 else ->{
                                         searchPlate?.setOnEditorActionListener { v, actionId, _ ->
+                                                Log.d("action", "searching folder . . .")
                                                 if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED
                                                         || actionId == EditorInfo.IME_ACTION_SEARCH ) {
                                                         val searchQuery = v.text.toString()
-//                                                        viewModel.setQuery(searchQuery)
+                                                        viewModel.setQuery(searchQuery)
                                                         startNewSearch()
                                                 }
                                                 true
@@ -255,13 +354,11 @@ constructor(
 
         private fun setupFAB(){
                 add_new_note_fab.setOnClickListener {
-//                        Log.d("action", "add_new_note_fab")
 
                         uiController.displayInputCaptureDialog(
                                 getString(com.example.choplaygroundkotlin.R.string.text_enter_a_title),
                                 object: DialogInputCaptureCallback {
                                         override fun onTextCaptured(text: String) {
-                                                Log.d("action", "add_new_note_fab $text")
                                                 val newFolder = viewModel.createNewFolder(folder_name = text)
                                                 viewModel.setStateEvent(
                                                         InsertNewFolderEvent(
@@ -276,8 +373,8 @@ constructor(
 
         private fun startNewSearch(){
                 printLogD("DCM", "start new search")
-//                viewModel.clearList()
-//                viewModel.loadFirstPage()
+                viewModel.clearList()
+                viewModel.loadFirstPage()
         }
 
         private fun setupSwipeRefresh(){
@@ -296,79 +393,92 @@ constructor(
         }
 
         private fun showFilterDialog() {
-//                activity?.let {
-//                        val dialog = MaterialDialog(it)
-//                                .noAutoDismiss()
-//                                .customView(R.layout.layout_filter)
-//
-//                        val view = dialog.getCustomView()
-//
-//                        val filter = viewModel.getFilter()
-//                        val order = viewModel.getOrder()
-//
-//                        view.findViewById<RadioGroup>(R.id.filter_group).apply {
-//                                when (filter) {
-//                                        NOTE_FILTER_DATE_CREATED -> check(R.id.filter_date)
-//                                        NOTE_FILTER_TITLE -> check(R.id.filter_title)
-//                                }
-//                        }
-//
-//                        view.findViewById<RadioGroup>(R.id.order_group).apply {
-//                                when (order) {
-//                                        NOTE_ORDER_ASC -> check(R.id.filter_asc)
-//                                        NOTE_ORDER_DESC -> check(R.id.filter_desc)
-//                                }
-//                        }
-//
-//                        view.findViewById<TextView>(R.id.positive_button).setOnClickListener {
-//
-//                                val newFilter =
-//                                        when (view.findViewById<RadioGroup>(R.id.filter_group).checkedRadioButtonId) {
-//                                                R.id.filter_title -> NOTE_FILTER_TITLE
-//                                                R.id.filter_date -> NOTE_FILTER_DATE_CREATED
-//                                                else -> NOTE_FILTER_DATE_CREATED
-//                                        }
-//
-//                                val newOrder =
-//                                        when (view.findViewById<RadioGroup>(R.id.order_group).checkedRadioButtonId) {
-//                                                R.id.filter_desc -> "-"
-//                                                else -> ""
-//                                        }
-//
-//                                viewModel.apply {
-//                                        saveFilterOptions(newFilter, newOrder)
-//                                        setNoteFilter(newFilter)
-//                                        setNoteOrder(newOrder)
-//                                }
-//
-//                                startNewSearch()
-//
-//                                dialog.dismiss()
-//                        }
-//
-//                        view.findViewById<TextView>(R.id.negative_button).setOnClickListener {
-//                                dialog.dismiss()
-//                        }
-//
-//                        dialog.show()
-//                }
+                activity?.let {
+                        val dialog = MaterialDialog(it)
+                                .noAutoDismiss()
+                                .customView(R.layout.layout_filter)
+
+                        val view = dialog.getCustomView()
+
+                        val filter = viewModel.getFilter()
+                        val order = viewModel.getOrder()
+
+                        view.findViewById<RadioGroup>(R.id.filter_group).apply {
+                                when (filter) {
+                                        FOLDER_FILTER_DATE_CREATED -> check(R.id.filter_date)
+                                        FOLDER_FILTER_TITLE -> check(R.id.filter_title)
+                                }
+                        }
+
+                        view.findViewById<RadioGroup>(R.id.order_group).apply {
+                                when (order) {
+                                        FOLDER_ORDER_ASC -> check(R.id.filter_asc)
+                                        FOLDER_ORDER_DESC -> check(R.id.filter_desc)
+                                }
+                        }
+
+                        view.findViewById<TextView>(R.id.positive_button).setOnClickListener {
+
+                                val newFilter =
+                                        when (view.findViewById<RadioGroup>(R.id.filter_group).checkedRadioButtonId) {
+                                                R.id.filter_title -> FOLDER_FILTER_TITLE
+                                                R.id.filter_date -> FOLDER_FILTER_DATE_CREATED
+                                                else -> FOLDER_FILTER_DATE_CREATED
+                                        }
+
+                                val newOrder =
+                                        when (view.findViewById<RadioGroup>(R.id.order_group).checkedRadioButtonId) {
+                                                R.id.filter_desc -> "-"
+                                                else -> ""
+                                        }
+
+                                viewModel.apply {
+                                        saveFilterOptions(newFilter, newOrder)
+                                        setFolderFilter(newFilter)
+                                        setFolderOrder(newOrder)
+                                }
+
+                                startNewSearch()
+
+                                dialog.dismiss()
+                        }
+
+                        view.findViewById<TextView>(R.id.negative_button).setOnClickListener {
+                                dialog.dismiss()
+                        }
+
+                        dialog.show()
+                }
         }
 
 
         override fun onItemSelected(position: Int, item: Folder) {
-                Log.d("action", "item: $position")
+                if(isMultiSelectionModeEnabled()){
+                        viewModel.addOrRemoveFolderFromSelectedList(item)
+                }
+                else{
+                        viewModel.setFolder(item)
+                }
         }
 
         override fun restoreListPosition() {
-                Log.d("action", "restoreListPosition")
+                viewModel.getLayoutManagerState()?.let { lmState ->
+                        recycler_view?.layoutManager?.onRestoreInstanceState(lmState)
+                }
         }
 
         override fun isFolderSelected(folder: Folder): Boolean {
-                Log.d("action", "isFolderSelected")
-                return true
+                return viewModel.isFolderSelected(folder)
         }
 
         override fun onItemSwiped(position: Int) {
-                Log.d("action", "onItemSwiped")
+                if(!viewModel.isDeletePending()){
+                        listAdapter?.getFolder(position)?.let { folder ->
+                                viewModel.beginPendingDelete(folder)
+                        }
+                }
+                else{
+                        listAdapter?.notifyDataSetChanged()
+                }
         }
 }

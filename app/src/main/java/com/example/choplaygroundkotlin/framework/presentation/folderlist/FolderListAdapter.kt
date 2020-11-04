@@ -13,6 +13,7 @@ import com.example.choplaygroundkotlin.R
 import com.example.choplaygroundkotlin.business.domain.model.Folder
 import com.example.choplaygroundkotlin.business.domain.util.DateUtil
 import com.example.choplaygroundkotlin.framework.presentation.common.changeColor
+import com.example.choplaygroundkotlin.util.printLogD
 import kotlinx.android.synthetic.main.layout_folder_list_item.view.*
 
 class FolderListAdapter(
@@ -63,7 +64,22 @@ class FolderListAdapter(
     }
 
     fun submitList(list: List<Folder>) {
-        differ.submitList(list)
+        val commitCallback = Runnable {
+            // if process died must restore list position
+            // very annoying
+            interaction?.restoreListPosition()
+        }
+        printLogD("listadapter", "size: ${list.size}")
+        differ.submitList(list, commitCallback)
+    }
+
+    fun getFolder(index: Int): Folder? {
+        return try{
+            differ.currentList[index]
+        }catch (e: IndexOutOfBoundsException){
+            e.printStackTrace()
+            null
+        }
     }
 
     class FolderViewHolder

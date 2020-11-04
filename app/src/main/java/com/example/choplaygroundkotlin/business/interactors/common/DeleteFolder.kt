@@ -33,7 +33,7 @@ class DeleteFolder<ViewState>(
                 return if(resultObj > 0){
                     DataState.data(
                         response = Response(
-                            message = DELETE_NOTE_SUCCESS,
+                            message = DELETE_FOLDER_SUCCESS,
                             uiComponentType = UIComponentType.None(),
                             messageType = MessageType.Success()
                         ),
@@ -44,7 +44,7 @@ class DeleteFolder<ViewState>(
                 else{
                     DataState.data(
                         response = Response(
-                            message = DELETE_NOTE_FAILED,
+                            message = DELETE_FOLDER_FAILED,
                             uiComponentType = UIComponentType.Toast(),
                             messageType = MessageType.Error()
                         ),
@@ -58,7 +58,7 @@ class DeleteFolder<ViewState>(
         emit(response)
 
         // update network
-        if(response?.stateMessage?.response?.message.equals(DELETE_NOTE_SUCCESS)){
+        if(response?.stateMessage?.response?.message.equals(DELETE_FOLDER_SUCCESS)){
 
             // delete from 'folders' node
             safeApiCall(IO){
@@ -74,9 +74,9 @@ class DeleteFolder<ViewState>(
     }
 
     companion object{
-        val DELETE_NOTE_SUCCESS = "Successfully deleted folder."
-        val DELETE_NOTE_PENDING = "Delete pending..."
-        val DELETE_NOTE_FAILED = "Failed to delete folder."
+        val DELETE_FOLDER_SUCCESS = "Successfully deleted folder."
+        val DELETE_FOLDER_PENDING = "Delete pending..."
+        val DELETE_FOLDER_FAILED = "Failed to delete folder."
         val DELETE_ARE_YOU_SURE = "Are you sure you want to delete this?"
     }
 }

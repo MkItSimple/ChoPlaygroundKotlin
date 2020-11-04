@@ -15,11 +15,11 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
-            android:layout_width="0dp"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
             android:iconifiedByDefault="false"
             android:queryHint="@string/text_Search"
+            android:tooltipText="Search folder..."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/action_filter"
