@@ -98,16 +98,18 @@ class FolderListAdapter(
 
         fun bind(item: Folder) = with(itemView) {
             setOnClickListener {
-                interaction?.onItemSelected(adapterPosition, item)
+                interaction?.onItemSelected(adapterPosition, folder)
             }
 
             setOnLongClickListener {
                 interaction?.activateMultiSelectionMode()
-                interaction?.onItemSelected(adapterPosition, item)
+                interaction?.onItemSelected(adapterPosition, folder)
                 true
             }
 
+            folder = item
             folder_name.text = item.folder_name
+            folder_timestamp.text = dateUtil.removeTimeFromDateString(item.updated_at)
 
             selectedFolders.observe(lifecycleOwner, Observer { folders ->
 

@@ -25,6 +25,7 @@ import com.example.choplaygroundkotlin.business.domain.state.*
 import com.example.choplaygroundkotlin.business.domain.util.DateUtil
 import com.example.choplaygroundkotlin.business.interactors.common.DeleteFolder.Companion.DELETE_FOLDER_PENDING
 import com.example.choplaygroundkotlin.business.interactors.common.DeleteFolder.Companion.DELETE_FOLDER_SUCCESS
+import com.example.choplaygroundkotlin.business.interactors.folderlist.DeleteMultipleFolders.Companion.DELETE_FOLDERS_ARE_YOU_SURE
 import com.example.choplaygroundkotlin.framework.datasource.cache.database.FOLDER_FILTER_DATE_CREATED
 import com.example.choplaygroundkotlin.framework.datasource.cache.database.FOLDER_FILTER_TITLE
 import com.example.choplaygroundkotlin.framework.datasource.cache.database.FOLDER_ORDER_ASC
@@ -260,8 +261,32 @@ constructor(
                 parentView
                         .findViewById<ImageView>(R.id.action_delete_folders)
                         .setOnClickListener {
-//                                deleteNotes()
+                                deleteFolders()
                         }
+        }
+
+        private fun deleteFolders(){
+                viewModel.setStateEvent(
+                        CreateStateMessageEvent(
+                                stateMessage = StateMessage(
+                                        response = Response(
+                                                message = DELETE_FOLDERS_ARE_YOU_SURE,
+                                                uiComponentType = UIComponentType.AreYouSureDialog(
+                                                        object : AreYouSureCallback {
+                                                                override fun proceed() {
+                                                                        viewModel.deleteFolders()
+                                                                }
+
+                                                                override fun cancel() {
+                                                                        // do nothing
+                                                                }
+                                                        }
+                                                ),
+                                                messageType = MessageType.Info()
+                                        )
+                                )
+                        )
+                )
         }
 
         private fun enableSearchViewToolbarState(){
@@ -334,7 +359,7 @@ constructor(
                         val view = toolbar_content_container
                                 .findViewById<Toolbar>(R.id.multiselect_toolbar)
                         toolbar_content_container.removeView(view)
-//                        viewModel.clearSelectedNotes()
+                        viewModel.clearSelectedFolders()
                 }
         }
 
@@ -468,7 +493,8 @@ constructor(
         }
 
         override fun isFolderSelected(folder: Folder): Boolean {
-                return viewModel.isFolderSelected(folder)
+//                return viewModel.isFolderSelected(folder)
+                return true
         }
 
         override fun onItemSwiped(position: Int) {
