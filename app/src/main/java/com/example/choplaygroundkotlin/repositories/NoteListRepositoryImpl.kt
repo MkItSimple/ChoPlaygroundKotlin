@@ -9,11 +9,11 @@ class NoteListRepositoryImpl @Inject constructor(
     private val noteDao: NoteDao
 ) : NoteListRepository {
 
-    override suspend fun insertNoteItem(noteItem: NoteItem) {
-        noteDao.insertNoteItem(noteItem)
+    override suspend fun insertNoteItem(noteCacheEntity: NoteCacheEntity) {
+        noteDao.insertNoteItem(noteCacheEntity)
     }
 
-    override fun observeAllNoteItems(): LiveData<List<NoteItem>> {
+    override fun observeAllNoteItems(): LiveData<List<NoteCacheEntity>> {
         return noteDao.observeAllNoteItems()
     }
 
@@ -21,11 +21,11 @@ class NoteListRepositoryImpl @Inject constructor(
         return noteDao.deleteAllNotes()
     }
 
-    override suspend fun insertFolderItem(folderItem: FolderItem) {
-        folderDao.insertFolderItem(folderItem)
+    override suspend fun insertFolderItem(folderCacheEntity: FolderCacheEntity) {
+        folderDao.insertFolderItem(folderCacheEntity)
     }
 
-    override fun observeAllFolderItems(): LiveData<List<FolderItem>> {
+    override fun observeAllFolderItems(): LiveData<List<FolderCacheEntity>> {
         return folderDao.observeAllFolderItems()
     }
 

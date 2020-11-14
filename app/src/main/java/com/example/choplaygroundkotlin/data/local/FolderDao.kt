@@ -6,10 +6,10 @@ import androidx.room.*
 @Dao
 interface FolderDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFolderItem(folderItem: FolderItem)
+    suspend fun insertFolderItem(folderCacheEntity: FolderCacheEntity)
 
     @Query("SELECT * FROM folders")
-    fun observeAllFolderItems(): LiveData<List<FolderItem>>
+    fun observeAllFolderItems(): LiveData<List<FolderCacheEntity>>
 
     @Query("DELETE FROM folders")
     suspend fun deleteAllFolders()

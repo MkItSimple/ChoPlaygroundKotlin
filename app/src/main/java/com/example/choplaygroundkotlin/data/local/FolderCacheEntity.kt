@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "folders")
-data class FolderItem(
+data class FolderCacheEntity(
     @PrimaryKey(autoGenerate = true)
     val folder_id: Long = 0L,
     var folder_name: String

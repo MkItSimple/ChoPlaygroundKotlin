@@ -5,10 +5,10 @@ import androidx.room.Relation
 
 data class FolderWithNotes(
     @Embedded
-    val folderItem: FolderItem,
+    val folderCacheEntity: FolderCacheEntity,
     @Relation(
         parentColumn = "folder_id",
         entityColumn = "note_folder_id"
     )
-    val notes: List<NoteItem>
+    val notes: List<NoteCacheEntity>
 )

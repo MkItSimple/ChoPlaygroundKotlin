@@ -1,26 +1,24 @@
 package com.example.choplaygroundkotlin.repositories
 
 import androidx.lifecycle.LiveData
-import androidx.room.Delete
-import androidx.room.Query
-import com.example.choplaygroundkotlin.data.local.FolderItem
+import com.example.choplaygroundkotlin.data.local.FolderCacheEntity
 import com.example.choplaygroundkotlin.data.local.FolderWithNotes
-import com.example.choplaygroundkotlin.data.local.NoteItem
+import com.example.choplaygroundkotlin.data.local.NoteCacheEntity
 
 interface NoteListRepository {
 
     // Note
-    suspend fun insertNoteItem(noteItem: NoteItem)
+    suspend fun insertNoteItem(noteCacheEntity: NoteCacheEntity)
 
-    fun observeAllNoteItems(): LiveData<List<NoteItem>>
+    fun observeAllNoteItems(): LiveData<List<NoteCacheEntity>>
 
     suspend fun deleteAllNotes()
 
 
     // Folder
-    suspend fun insertFolderItem(noteItem: FolderItem)
+    suspend fun insertFolderItem(noteCacheEntity: FolderCacheEntity)
 
-    fun observeAllFolderItems(): LiveData<List<FolderItem>>
+    fun observeAllFolderItems(): LiveData<List<FolderCacheEntity>>
 
     suspend fun deleteAllFolders()
 

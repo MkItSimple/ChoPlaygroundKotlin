@@ -2,15 +2,14 @@ package com.example.choplaygroundkotlin.data.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.choplaygroundkotlin.domain.Note
 
 @Dao
 interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNoteItem(noteItem: NoteItem)
+    suspend fun insertNoteItem(noteCacheEntity: NoteCacheEntity)
 
     @Query("SELECT * FROM notes")
-    fun observeAllNoteItems(): LiveData<List<NoteItem>>
+    fun observeAllNoteItems(): LiveData<List<NoteCacheEntity>>
 
     @Query("DELETE FROM notes")
     suspend fun deleteAllNotes()

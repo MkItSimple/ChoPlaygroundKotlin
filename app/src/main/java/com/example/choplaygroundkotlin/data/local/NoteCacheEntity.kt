@@ -9,13 +9,13 @@ import androidx.room.PrimaryKey
     // with this we now can't add note if folder_id don't exist in folders table
     foreignKeys = [
         ForeignKey(
-            entity = FolderItem::class,
+            entity = FolderCacheEntity::class,
             parentColumns = ["folder_id"],
             childColumns = ["note_folder_id"]
         )
     ]
 )
-data class NoteItem(
+data class NoteCacheEntity(
     @PrimaryKey(autoGenerate = true)
     val note_id: Long = 0L,
     var title: String,

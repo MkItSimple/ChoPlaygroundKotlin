@@ -8,8 +8,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.choplaygroundkotlin.R
 import com.example.choplaygroundkotlin.adapters.NoteListAdapter
-import com.example.choplaygroundkotlin.data.local.FolderItem
-import com.example.choplaygroundkotlin.data.local.NoteItem
+import com.example.choplaygroundkotlin.data.local.FolderCacheEntity
+import com.example.choplaygroundkotlin.data.local.NoteCacheEntity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_note_list.*
 import javax.inject.Inject
@@ -25,8 +25,8 @@ class NoteListFragment @Inject constructor(
         super.onViewCreated(view, savedInstanceState)
         subscribeObservers()
 
-        val note = NoteItem(0, "n1", 1)
-        val folder = FolderItem(0, "n1")
+        val note = NoteCacheEntity(0, "n1", 1)
+        val folder = FolderCacheEntity(0, "n1")
 
         button_add_folder.setOnClickListener {
             viewModel.insertNoteItem(note)
@@ -37,16 +37,16 @@ class NoteListFragment @Inject constructor(
 
     private fun subscribeObservers() {
         viewModel.noteItems.observe(viewLifecycleOwner, Observer {
-            //Log.d("action", "notes: $it")
+            Log.d("action", "notes: $it")
         })
         viewModel.folderItems.observe(viewLifecycleOwner, Observer {
-            //Log.d("action", "folders: $it")
+            Log.d("action", "folders: $it")
         })
         viewModel.fetchFoldersWithNotes.observe(viewLifecycleOwner, Observer {
-            val foldersWithNotesList = it
-            val targetValue = it[0].notes.size
-            Log.d("action", "folders with notes: $it")
-            Log.d("action", "notes count: $targetValue")
+//            val foldersWithNotesList = it
+//            val targetValue = it[0].notes.size
+//            Log.d("action", "folders with notes: $it")
+//            Log.d("action", "notes count: $targetValue")
         })
     }
 }

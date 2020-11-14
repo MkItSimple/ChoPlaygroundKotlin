@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [FolderItem::class, NoteItem::class],
+    entities = [FolderCacheEntity::class, NoteCacheEntity::class],
     version = 2
 )
 abstract class NoteDatabase : RoomDatabase() {
