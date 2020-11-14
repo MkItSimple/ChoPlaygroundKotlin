@@ -9,6 +9,6 @@ import androidx.room.PrimaryKey
     tableName = "folders")
 data class FolderItem(
     @PrimaryKey(autoGenerate = true)
-    val folder_id: Int? = null,
+    val folder_id: Long = 0L,
     var folder_name: String
 )

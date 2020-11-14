@@ -11,4 +11,7 @@ interface NoteDao {
 
     @Query("SELECT * FROM notes")
     fun observeAllNoteItems(): LiveData<List<NoteItem>>
+
+    @Query("DELETE FROM notes")
+    suspend fun deleteAllNotes()
 }

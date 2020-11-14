@@ -10,4 +10,12 @@ interface FolderDao {
 
     @Query("SELECT * FROM folders")
     fun observeAllFolderItems(): LiveData<List<FolderItem>>
+
+    @Query("DELETE FROM folders")
+    suspend fun deleteAllFolders()
+
+    // Folders and Notes
+    @Query("SELECT * FROM folders")
+    @Transaction
+    fun fetchFoldersWithNotes(): LiveData<List<FolderWithNotes>>
 }

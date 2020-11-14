@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [FolderItem::class, NoteItem::class],
-    version = 1
+    version = 2
 )
 abstract class NoteDatabase : RoomDatabase() {
     abstract fun folderDao(): FolderDao

@@ -14,10 +14,11 @@ class NoteListViewModel @ViewModelInject constructor(
 
     val noteItems = repository.observeAllNoteItems()
 
+    val fetchFoldersWithNotes = repository.fetchFoldersWithNotes()
+
     fun insertNoteItem(note: NoteItem) = viewModelScope.launch {
         repository.insertNoteItem(note)
     }
-
 
     val folderItems = repository.observeAllFolderItems()
 
@@ -25,6 +26,10 @@ class NoteListViewModel @ViewModelInject constructor(
         repository.insertFolderItem(folder)
     }
 
-    
+    fun deleteAll() = viewModelScope.launch {
+        repository.deleteAllFolders()
+        repository.deleteAllNotes()
+    }
+
 
 }
