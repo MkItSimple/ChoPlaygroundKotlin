@@ -1,13 +1,18 @@
 package com.example.choplaygroundkotlin.repositories
 
 import androidx.lifecycle.LiveData
-import com.example.choplaygroundkotlin.data.local.FolderCacheEntity
+import com.example.choplaygroundkotlin.data.local.FolderItem
 import com.example.choplaygroundkotlin.data.local.NoteItem
-import com.example.choplaygroundkotlin.domain.Note
 
 interface NoteListRepository {
 
+    // Note
     suspend fun insertNoteItem(noteItem: NoteItem)
 
     fun observeAllNoteItems(): LiveData<List<NoteItem>>
+
+    // Folder
+    suspend fun insertFolderItem(noteItem: FolderItem)
+
+    fun observeAllFolderItems(): LiveData<List<FolderItem>>
 }

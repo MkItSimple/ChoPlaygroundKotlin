@@ -2,6 +2,7 @@ package com.example.choplaygroundkotlin.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.choplaygroundkotlin.data.local.FolderDao
 import com.example.choplaygroundkotlin.data.local.NoteDao
 import com.example.choplaygroundkotlin.data.local.NoteDatabase
 import com.example.choplaygroundkotlin.other.Constants.DATABASE_NAME
@@ -27,8 +28,15 @@ object AppModule {
     @Singleton
     @Provides
     fun provideDefaultNoteListRepository(
-        dao: NoteDao
-    ) = NoteListRepositoryImpl(dao) as NoteListRepository
+        folderDao: FolderDao,
+        noteDao: NoteDao
+    ) = NoteListRepositoryImpl(folderDao, noteDao) as NoteListRepository
+
+    @Singleton
+    @Provides
+    fun provideFolderDao(
+        database: NoteDatabase
+    ) = database.folderDao()
 
     @Singleton
     @Provides
