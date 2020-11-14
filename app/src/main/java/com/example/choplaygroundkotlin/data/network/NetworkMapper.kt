@@ -29,7 +29,8 @@ constructor(
     override fun mapFromEntity(entity: NoteNetworkEntity): Note {
         return Note(
             id = entity.id,
-            title = entity.title
+            title = entity.title,
+            note_folder_id = entity.note_folder_id
 //            body = entity.body,
 //            updated_at = dateUtil.convertFirebaseTimestampToStringData(entity.updated_at),
 //            created_at = dateUtil.convertFirebaseTimestampToStringData(entity.created_at)
@@ -39,7 +40,8 @@ constructor(
     override fun mapToEntity(domainModel: Note): NoteNetworkEntity {
         return NoteNetworkEntity(
             id = domainModel.id,
-            title = domainModel.title
+            title = domainModel.title,
+            note_folder_id = domainModel.note_folder_id
 //            body = domainModel.body,
 //            updated_at = dateUtil.convertStringDateToFirebaseTimestamp(domainModel.updated_at),
 //            created_at = dateUtil.convertStringDateToFirebaseTimestamp(domainModel.created_at)

@@ -2,6 +2,7 @@ package com.example.choplaygroundkotlin.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.choplaygroundkotlin.data.local.CacheMapper
 import com.example.choplaygroundkotlin.data.local.FolderDao
 import com.example.choplaygroundkotlin.data.local.NoteDao
 import com.example.choplaygroundkotlin.data.local.NoteDatabase
@@ -33,8 +34,9 @@ object AppModule {
     @Provides
     fun provideDefaultNoteListRepository(
         folderDao: FolderDao,
-        noteDao: NoteDao
-    ) = NoteListRepositoryImpl(folderDao, noteDao) as NoteListRepository
+        noteDao: NoteDao,
+        cacheMapper: CacheMapper
+    ) = NoteListRepositoryImpl(folderDao, noteDao, cacheMapper) as NoteListRepository
 
     @Singleton
     @Provides

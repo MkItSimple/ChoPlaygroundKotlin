@@ -4,7 +4,9 @@ data class NoteNetworkEntity(
 
     var id: String,
 
-    var title: String
+    var title: String,
+
+    var note_folder_id: String
 
 //    var body: String,
 //
@@ -17,8 +19,8 @@ data class NoteNetworkEntity(
     // no arg constructor for firestore
     constructor(): this(
         "",
+        "",
         ""
-//        "",
 //        Timestamp.now(),
 //        Timestamp.now()
     )
@@ -40,6 +42,7 @@ data class NoteNetworkEntity(
 
         if (id != other.id) return false
         if (title != other.title) return false
+        if (note_folder_id != other.note_folder_id) return false
 //        if (body != other.body) return false
 ////        if (updated_at != other.updated_at) return false // ignore
 //        if (created_at != other.created_at) return false
@@ -50,6 +53,7 @@ data class NoteNetworkEntity(
     override fun hashCode(): Int {
         var result = id.hashCode()
         result = 31 * result + title.hashCode()
+        result = 31 * result + note_folder_id.hashCode()
 //        result = 31 * result + body.hashCode()
 //        result = 31 * result + updated_at.hashCode()
 //        result = 31 * result + created_at.hashCode()

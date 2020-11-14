@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import com.example.choplaygroundkotlin.data.local.FolderCacheEntity
 import com.example.choplaygroundkotlin.data.local.FolderWithNotes
 import com.example.choplaygroundkotlin.data.local.NoteCacheEntity
+import com.example.choplaygroundkotlin.domain.Note
 
 interface NoteListRepository {
 
     // Note
-    suspend fun insertNoteItem(noteCacheEntity: NoteCacheEntity)
+    suspend fun insertNote(note: Note): Long
 
     fun observeAllNoteItems(): LiveData<List<NoteCacheEntity>>
 

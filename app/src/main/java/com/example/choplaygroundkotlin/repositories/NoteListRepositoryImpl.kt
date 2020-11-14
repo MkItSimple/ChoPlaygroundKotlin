@@ -2,15 +2,17 @@ package com.example.choplaygroundkotlin.repositories
 
 import androidx.lifecycle.LiveData
 import com.example.choplaygroundkotlin.data.local.*
+import com.example.choplaygroundkotlin.domain.Note
 import javax.inject.Inject
 
 class NoteListRepositoryImpl @Inject constructor(
     private val folderDao: FolderDao,
-    private val noteDao: NoteDao
+    private val noteDao: NoteDao,
+    private val noteMapper: CacheMapper
 ) : NoteListRepository {
 
-    override suspend fun insertNoteItem(noteCacheEntity: NoteCacheEntity) {
-        noteDao.insertNoteItem(noteCacheEntity)
+    override suspend fun insertNote(note: Note) : Long {
+        return noteDao.insertNote(noteMapper.mapToEntity(note))
     }
 
     override fun observeAllNoteItems(): LiveData<List<NoteCacheEntity>> {
