@@ -7,12 +7,136 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/roboto_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="14dp"
+        android:text="Messenger Videos Roboto Bold"
+        android:textSize="20dp"
+        android:textColor="#000"
+        android:fontFamily="@font/roboto_bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/roboto_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Messenger Videos Roboto Medium"
+        android:textSize="14sp"
+        android:textColor="#000"
+        android:fontFamily="@font/roboto_medium"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roboto_bold" />
+
+    <TextView
+        android:id="@+id/roboto_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Messenger Videos Roboto Regular"
+        android:textSize="14sp"
+        android:textColor="#000"
+        android:fontFamily="@font/roboto_regular"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roboto_medium" />
+
+    <TextView
+        android:id="@+id/roboto_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Messenger Videos Roboto Light 1234567"
+        android:textSize="14sp"
+        android:textColor="#000"
+        android:fontFamily="@font/roboto_light"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roboto_regular" />
+
+    <TextView
+        android:id="@+id/roboto_thin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Messenger Videos Roboto Thin"
+        android:textSize="14sp"
+        android:textColor="#000"
+        android:fontFamily="@font/roboto_thin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roboto_light" />
+
+
+
+
+    <TextView
+        android:id="@+id/roboto_thin_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Messenger Videos Roboto Bold"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:fontFamily="@font/roboto_bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roboto_thin" />
+
+    <TextView
+        android:id="@+id/roboto_medium_20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16sp"
+        android:text="Messenger Videos Roboto Medium"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:fontFamily="@font/roboto_medium"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roboto_thin_20" />
+
+    <TextView
+        android:id="@+id/roboto_regular_20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14sp"
+        android:text="Messenger Videos Roboto Regular"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:fontFamily="@font/roboto_regular"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roboto_medium_20dp" />
+
+    <TextView
+        android:id="@+id/roboto_light_20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14sp"
+        android:text="Messenger Videos Roboto Light 1234567"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:fontFamily="@font/roboto_light"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roboto_regular_20dp" />
+
+    <TextView
+        android:id="@+id/roboto_thin_20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14sp"
+        android:text="Messenger Videos Roboto Thin"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:fontFamily="@font/roboto_thin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roboto_light_20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
