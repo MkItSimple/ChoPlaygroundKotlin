@@ -41,4 +41,6 @@
     <string name="filter_notes">Filter notes</string>
     <string name="logout">Logout</string>
     <string name="filter_notes_order">Filter notes order</string>
+    <string name="folder_name">Folder name</string>
+    <string name="notes_count">notes_ count</string>
 </resources>

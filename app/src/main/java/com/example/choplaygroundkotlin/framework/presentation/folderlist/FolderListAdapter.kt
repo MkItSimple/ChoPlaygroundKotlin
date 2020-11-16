@@ -92,7 +92,7 @@ class FolderListAdapter(
     ) : RecyclerView.ViewHolder(itemView) {
 
         private val COLOR_GREY = R.color.app_background_color
-        private val COLOR_GREY_5 = R.color.grey5
+        private val COLOR_GREY_5 = R.color.grey2
         private val COLOR_PRIMARY = R.color.colorPrimary
         private lateinit var folder: Folder
 
@@ -109,7 +109,8 @@ class FolderListAdapter(
 
             folder = item
             folder_name.text = item.folder_name
-            folder_timestamp.text = dateUtil.removeTimeFromDateString(item.updated_at)
+            //notes_count.text = dateUtil.removeTimeFromDateString(item.updated_at)
+            notes_count.text = "7 videos"
 
             selectedFolders.observe(lifecycleOwner, Observer { folders ->
 

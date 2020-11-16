@@ -1,47 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:weightSum="100"
     android:gravity="center_vertical"
-    android:layout_marginEnd="@dimen/recyclerview_start_end_margins"
-    android:layout_marginStart="@dimen/recyclerview_start_end_margins"
+    android:layout_marginStart="7dp"
+    android:layout_marginEnd="7dp"
     android:background="@color/colorPrimary">
 
     <View
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/colorAccent"/>
+        android:id="@+id/right_line"
+        android:layout_width="2dp"
+        android:layout_height="60dp"
+        android:background="@color/tealDark"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        android:layout_marginEnd="10dp"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/ic_folder_dark_64"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/right_line"/>
 
     <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:id="@+id/folder_name"
-        android:textSize="@dimen/title_list_item_text_size"
-        android:layout_weight="77"
-        android:text="Some Folder Name"
-        android:textColor="#000"
-        android:lines="1"
-        android:layout_marginTop="@dimen/default_view_margin"
-        android:layout_marginBottom="@dimen/default_view_margin"
-        android:layout_marginStart="@dimen/default_view_margin"
-        android:maxLines="1"
-        android:ellipsize="end"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/folder_name"
+        android:textColor="@color/black_second"
+        android:textSize="14dp"
+        android:fontFamily="@font/roboto_bold"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="10dp"/>
 
     <TextView
-        android:layout_width="0dp"
+        android:id="@+id/notes_count"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/folder_timestamp"
-        android:textSize="@dimen/date_list_item_text_size"
-        android:layout_weight="20"
-        android:text="Dec 1 2017"
-        android:layout_marginTop="@dimen/default_view_margin"
-        android:layout_marginBottom="@dimen/default_view_margin"
-        android:layout_marginEnd="@dimen/default_view_margin"
-        android:gravity="end"
-        android:textColor="@color/default_grey"/>
+        android:text="@string/notes_count"
+        android:textColor="@color/black_second"
+        android:textSize="14dp"
+        android:fontFamily="@font/roboto_regular"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/folder_name"
+        android:layout_marginStart="10dp"/>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+<!--<LinearLayout-->
+<!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:orientation="horizontal"-->
+<!--android:weightSum="100"-->
+<!--android:gravity="center_vertical"-->
+<!--android:layout_marginEnd="@dimen/recyclerview_start_end_margins"-->
+<!--android:layout_marginStart="@dimen/recyclerview_start_end_margins"-->
+<!--android:background="@color/colorPrimary">-->
+
+<!--<View-->
+<!--    android:layout_width="0dp"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:layout_weight="1"-->
+<!--    android:background="@color/colorAccent"/>-->
+
+<!--<TextView-->
+<!--    android:layout_width="0dp"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:id="@+id/folder_name"-->
+<!--    android:textSize="@dimen/title_list_item_text_size"-->
+<!--    android:layout_weight="77"-->
+<!--    android:text="Some Folder Name"-->
+<!--    android:textColor="#000"-->
+<!--    android:lines="1"-->
+<!--    android:layout_marginTop="@dimen/default_view_margin"-->
+<!--    android:layout_marginBottom="@dimen/default_view_margin"-->
+<!--    android:layout_marginStart="@dimen/default_view_margin"-->
+<!--    android:maxLines="1"-->
+<!--    android:ellipsize="end"/>-->
+
+<!--<TextView-->
+<!--    android:layout_width="0dp"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:id="@+id/folder_timestamp"-->
+<!--    android:textSize="@dimen/date_list_item_text_size"-->
+<!--    android:layout_weight="20"-->
+<!--    android:text="Dec 1 2017"-->
+<!--    android:layout_marginTop="@dimen/default_view_margin"-->
+<!--    android:layout_marginBottom="@dimen/default_view_margin"-->
+<!--    android:layout_marginEnd="@dimen/default_view_margin"-->
+<!--    android:gravity="end"-->
+<!--    android:textColor="@color/default_grey"/>-->
+
+<!--</LinearLayout>-->
